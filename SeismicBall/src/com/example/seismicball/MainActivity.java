@@ -29,8 +29,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 		
 		//needed to activation the sensor listener
 		sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-        if(sm.getSensorList(Sensor.TYPE_GYROSCOPE).size()!=0){
-        	Sensor s = sm.getSensorList(Sensor.TYPE_GYROSCOPE).get(0);
+        if(sm.getSensorList(Sensor.TYPE_ROTATION_VECTOR).size()!=0){
+        	Sensor s = sm.getSensorList(Sensor.TYPE_ROTATION_VECTOR).get(0);
         	sm.registerListener(this,s, SensorManager.SENSOR_DELAY_NORMAL);
         }
 
@@ -45,8 +45,31 @@ public class MainActivity extends Activity implements SensorEventListener {
 	
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		TextView test = (TextView) findViewById(R.id.textView);
-		test.setText(String.valueOf(event.values[0]));
+		
+		TextView tbxTop = (TextView) findViewById(R.id.tbxTop);
+		if(event.values[0]>0.1){
+			tbxTop.setText("up");
+		}else if(event.values[0]<-0.1){
+			tbxTop.setText("down");
+		}
+		else{
+			tbxTop.setText("nothing");
+		}
+		
+		
+		TextView tbxRight = (TextView) findViewById(R.id.tbxRight);
+		if(event.values[1]>0.1){
+			tbxRight.setText("left");
+		}else if(event.values[1]<-0.1){
+			tbxRight.setText("right");
+		}
+		else{
+			tbxRight.setText("nothing");
+		}
+		
+//		TextView tbxLeft = (TextView) findViewById(R.id.tbxLeft);
+//		tbxLeft.setText(String.valueOf(event.values[2]));
+		
 	}
 
 	@Override

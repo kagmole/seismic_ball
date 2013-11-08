@@ -4,6 +4,7 @@ import hearc.seismicball.R;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.Window;
 
@@ -11,6 +12,7 @@ import android.view.Window;
 public class MainActivity extends Activity {
 	
 	private GamePanel gamePanel;
+	private Handler gameHandler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +20,7 @@ public class MainActivity extends Activity {
 		
 		initActivity();
 		createComponents();
+		startGameLoop();
 	}
 	
 	private void initActivity() {
@@ -33,6 +36,25 @@ public class MainActivity extends Activity {
 		gamePanel = new GamePanel(this);
 		
 		setContentView(gamePanel);
+	}
+	
+	private void startGameLoop() {
+		gameHandler = new Handler();
+		
+		Runnable task = new Runnable() {
+			
+		    @Override
+		    public void run() {
+		    	// TODO Change to dynamic value
+		        gamePanel.updateGame(10, 0);
+		        gamePanel.invalidate();
+
+		        
+		        gameHandler.postDelayed(this, 100);
+		    }
+		};
+		gameHandler.removeCallbacks(task);
+		gameHandler.post(task);
 	}
 	
 	@Override

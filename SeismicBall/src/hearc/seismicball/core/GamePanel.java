@@ -1,6 +1,11 @@
 package hearc.seismicball.core;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import hearc.seismicball.R;
+import hearc.seismicball.elements.Ball;
+import hearc.seismicball.elements.Tile;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,48 +22,87 @@ public class GamePanel extends View {
 	private static final int START_TILE = 3;
 	private static final int END_TILE = 4;
 	
-	private static final int GRID_WIDTH = 16;
-	private static final int GRID_HEIGHT = 9;
-	
 	private static final int TILE_WIDTH = 64;
 	private static final int TILE_HEIGHT = 64;
 	
-	private Bitmap groundTile = BitmapFactory.decodeResource(getResources(), R.drawable.ground_tile);
-	private Bitmap wallTile = BitmapFactory.decodeResource(getResources(), R.drawable.wall_tile);
-	private Bitmap holeTile = BitmapFactory.decodeResource(getResources(), R.drawable.hole_tile);
-	private Bitmap startTile = BitmapFactory.decodeResource(getResources(), R.drawable.start_tile);
-	private Bitmap endTile = BitmapFactory.decodeResource(getResources(), R.drawable.end_tile);
+	private Ball ball;
 	
-	private int[][] grid;
+	private Bitmap ballImage = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
+	private Bitmap groundTileImage = BitmapFactory.decodeResource(getResources(), R.drawable.ground_tile);
+	private Bitmap wallTileImage = BitmapFactory.decodeResource(getResources(), R.drawable.wall_tile);
+	private Bitmap holeTileImage = BitmapFactory.decodeResource(getResources(), R.drawable.hole_tile);
+	private Bitmap startTileImage = BitmapFactory.decodeResource(getResources(), R.drawable.start_tile);
+	private Bitmap endTileImage = BitmapFactory.decodeResource(getResources(), R.drawable.end_tile);
 	
-	private Rect tileBounds;
+	private LinkedList<Tile> gridTiles;
+	private LinkedList<Tile> wallTiles;
 
 	public GamePanel(Context context) {
 		super(context);
 		
-		tileBounds = new Rect();
-		
-		initGrid();
+		initTilesAndBalls();
 	}
 	
-	private void initGrid() {
-		grid = new int[GRID_WIDTH][GRID_HEIGHT];
+	private void initTilesAndBalls() {		
+		int i;
+		int j = 0;
 		
-		// XXX Change for a resource's dynamic loading
-		for (int j = 0; j < GRID_HEIGHT; ++j) {
-			for (int i = 0; i < GRID_WIDTH; ++i) {
-				if (i == 0 || i == GRID_WIDTH - 1 || j == 0 || j == GRID_HEIGHT - 1) {
-					grid[i][j] = WALL_TILE;
-				} else if ((i == 1 && j == 1) || (i == GRID_WIDTH - 2 && j == GRID_HEIGHT - 2)
-						|| (i == 1 && j == GRID_HEIGHT - 2) || (i == GRID_WIDTH - 2 && j == 1)) {
-					grid[i][j] = HOLE_TILE;
-				} else if (i == 1 && j == 3) {
-					grid[i][j] = START_TILE;
-				} else if(i == GRID_WIDTH - 2 && j == GRID_HEIGHT - 4) {
-					grid[i][j] = END_TILE;
-				} else {
-					grid[i][j] = GROUND_TILE;
+		int left;
+		int top;
+		int right;
+		int bottom;
+		
+		List<List<Integer>> grid = LevelLoader.getLevel("levels/001.lvl", getContext());
+		
+		gridTiles = new LinkedList<Tile>();
+		wallTiles = new LinkedList<Tile>();
+		
+		for (List<Integer> gridRow : grid) {
+			i = 0;
+			
+			for (Integer gridValue : gridRow) {
+				left = i * TILE_WIDTH;
+				top = j * TILE_HEIGHT;
+				right = left + TILE_WIDTH;
+				bottom = top + TILE_HEIGHT;
+				
+				switch(gridValue) {
+				case GROUND_TILE:
+					gridTiles.add(new Tile(left, top, right, bottom, groundTileImage));
+					break;
+				case WALL_TILE:
+					Tile tile = new Tile(left, top, right, bottom, wallTileImage);
+					
+					gridTiles.add(tile);
+					wallTiles.add(tile);
+					break;
+				case HOLE_TILE:
+					gridTiles.add(new Tile(left, top, right, bottom, holeTileImage));
+					break;
+				case START_TILE:
+					gridTiles.add(new Tile(left, top, right, bottom, startTileImage));
+					
+					ball = new Ball(left, top, right, bottom, ballImage);
+					break;
+				case END_TILE:
+					gridTiles.add(new Tile(left, top, right, bottom, endTileImage));
+					break;
+				default:
+					gridTiles.add(new Tile(left, top, right, bottom, groundTileImage));
+					break;
 				}
+				++i;
+			}
+			++j;
+		}
+	}
+	
+	public void updateGame(int x, int y) {
+		ball.translate(x, y);
+		
+		for (Tile tile : wallTiles) {
+			if (Rect.intersects(ball.getBounds(), tile.getBounds())) {
+				ball.translate(-x, -y);
 			}
 		}
 	}
@@ -67,34 +111,9 @@ public class GamePanel extends View {
 	public void onDraw(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
 		
-		for (int j = 0; j < GRID_HEIGHT; ++j) {
-			for (int i = 0; i < GRID_WIDTH; ++i) {
-				tileBounds.left = i * TILE_WIDTH;
-				tileBounds.top = j * TILE_HEIGHT;
-				tileBounds.right = (i + 1) * TILE_WIDTH;
-				tileBounds.bottom = (j + 1) * TILE_HEIGHT;
-				
-				switch(grid[i][j]) {
-				case GROUND_TILE:
-					canvas.drawBitmap(groundTile, null, tileBounds, null);
-					break;
-				case WALL_TILE:
-					canvas.drawBitmap(wallTile, null, tileBounds, null);
-					break;
-				case HOLE_TILE:
-					canvas.drawBitmap(holeTile, null, tileBounds, null);
-					break;
-				case START_TILE:
-					canvas.drawBitmap(startTile, null, tileBounds, null);
-					break;
-				case END_TILE:
-					canvas.drawBitmap(endTile, null, tileBounds, null);
-					break;
-				default:
-					canvas.drawBitmap(groundTile, null, tileBounds, null);
-					break;
-				}
-			}
+		for (Tile tile : gridTiles) {
+			tile.drawElement(canvas);
 		}
+		ball.drawElement(canvas);
 	}
 }

@@ -1,24 +1,31 @@
 package hearc.seismicball.core;
 
 import hearc.seismicball.R;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.Window;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SensorEventListener {
 	
 	private GamePanel gamePanel;
 	private Handler gameHandler;
+	private SensorManager sensorManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		initActivity();
+		initSensorManager();
 		createComponents();
 		startGameLoop();
 	}
@@ -30,6 +37,18 @@ public class MainActivity extends Activity {
 		
 		// Hide the window title
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	}
+	
+	@SuppressLint("InlinedApi")
+	private void initSensorManager() {
+		// Sensor listener's activation
+		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+		
+        if(sensorManager.getSensorList(Sensor.TYPE_ROTATION_VECTOR).size() != 0) {
+        	Sensor rotationSensor = sensorManager.getSensorList(Sensor.TYPE_ROTATION_VECTOR).get(0);
+        	
+        	sensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
 	}
 	
 	private void createComponents() {
@@ -63,5 +82,21 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		
 		return true;
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
+		// Nothing to do here for the moment
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent arg0) {
+		// TODO
+		/*
+		 * event.values[0] > 0: up
+		 * event.values[0] < 0: down
+		 * event.values[1] > 0: left
+		 * event.values[1] < 0: right
+		 */
 	}
 }

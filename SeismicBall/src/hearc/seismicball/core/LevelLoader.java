@@ -1,4 +1,4 @@
-package hearc.seismic.readfiletest;
+package hearc.seismicball.core;
 
 import java.io.BufferedReader;
 import java.io.IOException;

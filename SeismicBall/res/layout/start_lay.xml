@@ -14,27 +14,29 @@
 
     <Button
         android:id="@+id/startLayBtnHighscore"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Button" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/startLayBtnPlay"
+        android:layout_marginTop="30dp"
+        android:text="Highscores" />
 
     <Button
         android:id="@+id/startLayBtnOption"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/startLayBtnHighscore"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="Option" />
 
     <Button
         android:id="@+id/startLayBtnPlay"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/startLayBtnHighscore"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/startLayLblTitle"
+        android:layout_marginTop="30dp"
         android:text="Play" />
 
 </RelativeLayout>

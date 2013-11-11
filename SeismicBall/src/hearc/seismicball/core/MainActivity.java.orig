@@ -1,8 +1,11 @@
 package hearc.seismicball.core;
 
 import hearc.seismicball.R;
+<<<<<<< HEAD
 import android.annotation.SuppressLint;
+=======
 import hearc.seismicball.core.database.HighscoresDB;
+>>>>>>> 3c21e4a1a10ac83a8b9b9085aa5a2b041395173b
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
@@ -15,14 +18,21 @@ import android.view.Menu;
 import android.view.Window;
 
 
+<<<<<<< HEAD
 public class MainActivity extends Activity implements SensorEventListener {
 	
 	private GamePanel gamePanel;
 	private Handler gameHandler;
 	private SensorManager sensorManager;
+=======
+public class MainActivity extends Activity implements SensorEventListener{
 	
-	public boolean isVictory;
+	private GamePanel gamePanel;
+	private Handler gameHandler;
+	private SensorManager sm;
 	private long startTime;
+	public boolean isVictory;//moche ce flag...
+>>>>>>> 3c21e4a1a10ac83a8b9b9085aa5a2b041395173b
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,15 @@ public class MainActivity extends Activity implements SensorEventListener {
 		
 		// Hide the window title
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		// Sensor initialisation
+		sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+		
+        if(sm.getSensorList(Sensor.TYPE_ROTATION_VECTOR).size() != 0) {
+        	Sensor s = sm.getSensorList(Sensor.TYPE_ROTATION_VECTOR).get(0);
+        	
+        	sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+        }
 	}
 	
 	@SuppressLint("InlinedApi")
@@ -92,6 +111,21 @@ public class MainActivity extends Activity implements SensorEventListener {
 	}
 
 	@Override
+<<<<<<< HEAD
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
+		// Nothing to do here for the moment
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent arg0) {
+		// TODO
+		/*
+		 * event.values[0] > 0: up
+		 * event.values[0] < 0: down
+		 * event.values[1] > 0: left
+		 * event.values[1] < 0: right
+		 */
+=======
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		 // nothing to do		
 	}
@@ -121,5 +155,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 			database.addHighscore((int)(System.currentTimeMillis()-startTime)/1000, "DEV");
 		}
 		super.onDestroy();
+>>>>>>> 3c21e4a1a10ac83a8b9b9085aa5a2b041395173b
 	}
 }

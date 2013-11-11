@@ -51,8 +51,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 		// Sensor listener's activation
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		
-        if(sensorManager.getSensorList(Sensor.TYPE_ROTATION_VECTOR).size() != 0) {
-        	Sensor rotationSensor = sensorManager.getSensorList(Sensor.TYPE_ROTATION_VECTOR).get(0);
+        if(sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0) {
+        	Sensor rotationSensor = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
         	
         	sensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
@@ -98,19 +98,21 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		float deadzone = 0.1f;
-		int speed = 10;//should be in the GamePanel class
-		if(event.values[0] > deadzone){
-			 gamePanel.updateGame(0, -speed);
-		}
-		if(event.values[0] < -deadzone){
-			gamePanel.updateGame(0, speed);
-		}
-		if(event.values[1] > deadzone){
-			gamePanel.updateGame(-speed, 0);
-		}
-		if(event.values[1] < -deadzone){
-			gamePanel.updateGame(speed, 0);
+		if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+			float deadzone = 2.5f;
+			int speed = 10;//should be in the GamePanel class
+			if(event.values[0] > deadzone){
+				 gamePanel.updateGame(0, speed);
+			}
+			if(event.values[0] < -deadzone){
+				gamePanel.updateGame(0, -speed);
+			}
+			if(event.values[1] > deadzone){
+				gamePanel.updateGame(speed, 0);
+			}
+			if(event.values[1] < -deadzone){
+				gamePanel.updateGame(-speed, 0);
+			}
 		}
 	}
 	

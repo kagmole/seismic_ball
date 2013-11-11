@@ -2,6 +2,7 @@ package hearc.seismicball.core;
 
 import hearc.seismicball.R;
 import android.annotation.SuppressLint;
+import hearc.seismicball.core.database.HighscoresDB;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
@@ -18,16 +19,22 @@ public class MainActivity extends Activity implements SensorEventListener {
 	
 	private GamePanel gamePanel;
 	private Handler gameHandler;
+	private SensorManager sm;
+	private long startTime;
+	public boolean isVictory;//moche ce flag...
 	private SensorManager sensorManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		startTime = System.currentTimeMillis();
+		isVictory = false;
+		
 		initActivity();
 		initSensorManager();
 		createComponents();
-		startGameLoop();
+//		startGameLoop();
 	}
 	
 	private void initActivity() {
@@ -37,6 +44,15 @@ public class MainActivity extends Activity implements SensorEventListener {
 		
 		// Hide the window title
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		// Sensor initialisation
+		sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+		
+        if(sm.getSensorList(Sensor.TYPE_ROTATION_VECTOR).size() != 0) {
+        	Sensor s = sm.getSensorList(Sensor.TYPE_ROTATION_VECTOR).get(0);
+        	
+        	sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+        }
 	}
 	
 	@SuppressLint("InlinedApi")
@@ -85,18 +101,34 @@ public class MainActivity extends Activity implements SensorEventListener {
 	}
 
 	@Override
-	public void onAccuracyChanged(Sensor arg0, int arg1) {
-		// Nothing to do here for the moment
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		 // nothing to do		
 	}
 
 	@Override
-	public void onSensorChanged(SensorEvent arg0) {
-		// TODO
-		/*
-		 * event.values[0] > 0: up
-		 * event.values[0] < 0: down
-		 * event.values[1] > 0: left
-		 * event.values[1] < 0: right
-		 */
+	public void onSensorChanged(SensorEvent event) {
+		float deadzone = 0.1f;
+		int speed = 10;//should be in the GamePanel class
+		if(event.values[0] > deadzone){
+			 gamePanel.updateGame(0, -speed);
+		}
+		if(event.values[0] < -deadzone){
+			gamePanel.updateGame(0, speed);
+		}
+		if(event.values[1] > deadzone){
+			gamePanel.updateGame(-speed, 0);
+		}
+		if(event.values[1] < -deadzone){
+			gamePanel.updateGame(speed, 0);
+		}
+	}
+	
+	@Override
+	protected void onDestroy(){
+		if(isVictory){
+			HighscoresDB database = new HighscoresDB(getApplicationContext());
+			database.addHighscore((int)(System.currentTimeMillis()-startTime)/1000, "DEV");
+		}
+		super.onDestroy();
 	}
 }

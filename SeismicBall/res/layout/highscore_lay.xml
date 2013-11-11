@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/highscoreLayLblTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp"
+        android:text="Highscores" />
+
+    <TextView
+        android:id="@+id/highscoreLayLblScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/highscoreLayLblTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:text="Score" />
+
+    <TextView
+        android:id="@+id/highscoreLayLblName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/highscoreLayLblScore"
+        android:layout_alignBottom="@+id/highscoreLayLblScore"
+        android:layout_marginLeft="40dp"
+        android:layout_toRightOf="@+id/highscoreLayLblScore"
+        android:text="Name" />
+
+    <TextView
+        android:id="@+id/highscoreLayLblRank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/highscoreLayLblScore"
+        android:layout_alignBottom="@+id/highscoreLayLblScore"
+        android:layout_marginRight="40dp"
+        android:layout_toLeftOf="@+id/highscoreLayLblScore"
+        android:text="Rank" />
+
+    <Button
+        android:id="@+id/highscoreLayBtnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="Back" />
+
+    <ListView
+        android:id="@+id/highscoreLayLvHighscores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/highscoreLayBtnBack"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/highscoreLayLblScore" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/highscoreLayBtnReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Reset" />
+
+</RelativeLayout>

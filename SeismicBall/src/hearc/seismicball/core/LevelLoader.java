@@ -11,8 +11,7 @@ import android.content.Context;
 public class LevelLoader {
 	public static List<List<Integer>> getLevel(String _fileName, Context _context){
 		List<List<Integer>> levelGrid = new ArrayList<List<Integer>>();
-		try {
-			
+		try {			
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(_context.getAssets().open(_fileName)));	
 						 

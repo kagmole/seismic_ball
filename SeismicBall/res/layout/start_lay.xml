@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/startLayLblTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Seismic Ball"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/startLayBtnHighscore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/startLayBtnPlay"
+        android:layout_marginTop="30dp"
+        android:text="Highscores" />
+
+    <Button
+        android:id="@+id/startLayBtnOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/startLayBtnHighscore"
+        android:layout_marginTop="30dp"
+        android:text="Option" />
+
+    <Button
+        android:id="@+id/startLayBtnPlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/startLayLblTitle"
+        android:layout_marginTop="30dp"
+        android:text="Play" />
+
+</RelativeLayout>

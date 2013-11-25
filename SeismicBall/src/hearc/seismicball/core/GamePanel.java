@@ -121,7 +121,7 @@ public class GamePanel extends View {
 			mainActivity.isVictory = true;
 			mainActivity.finish();
 		}
-		this.invalidate();
+		invalidate(ball.getBounds());
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.Window;
 
@@ -34,7 +35,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 		initActivity();
 		initSensorManager();
 		createComponents();
-//		startGameLoop();
 	}
 	
 	private void initActivity() {
@@ -64,24 +64,24 @@ public class MainActivity extends Activity implements SensorEventListener {
 		setContentView(gamePanel);
 	}
 	
-	private void startGameLoop() {
-		gameHandler = new Handler();
-		
-		Runnable task = new Runnable() {
-			
-		    @Override
-		    public void run() {
-		    	// TODO Change to dynamic value
-		        gamePanel.updateGame(10, 0);
-		        gamePanel.invalidate();
-
-		        
-		        gameHandler.postDelayed(this, 100);
-		    }
-		};
-		gameHandler.removeCallbacks(task);
-		gameHandler.post(task);
-	}
+//	private void startGameLoop() {
+//		gameHandler = new Handler();
+//		
+//		Runnable task = new Runnable() {
+//			
+//		    @Override
+//		    public void run() {
+//		    	// TODO Change to dynamic value
+//		        gamePanel.updateGame(10, 0);
+//		        
+//		        Log.i("BLA", "TEST");
+//		        
+//		        gameHandler.postDelayed(this, 100);
+//		    }
+//		};
+//		gameHandler.removeCallbacks(task);
+//		gameHandler.post(task);
+//	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

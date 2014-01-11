@@ -4,10 +4,8 @@ import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import hearc.seismicball.elements.Ball;
 import hearc.seismicball.elements.Level;
@@ -80,13 +78,8 @@ public class GameScreen extends Screen implements SensorEventListener {
 		/* Move ball with accelerator values */
 		float modifiersFactors = ball.getSpeedFactor() * deltaTime;
 		
-		// XXX trash code
-		float horizontalModifier = 3.0f * modifiersFactors;
-		float verticalModifier = 5.0f * modifiersFactors;
-		
-		// XXX replace by this
-//		float horizontalModifier = accelerometerValues[0] * modifiersFactors;
-//		float verticalModifier = accelerometerValues[1] * modifiersFactors;
+		float horizontalModifier = accelerometerValues[0] * modifiersFactors;
+		float verticalModifier = accelerometerValues[1] * modifiersFactors;
 		
 		int deltaX = ball.getBounds().left;
 		int deltaY = ball.getBounds().top;

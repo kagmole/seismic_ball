@@ -2,12 +2,15 @@ package hearc.seismicball.framework.implementation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -32,19 +35,18 @@ public abstract class AndroidGame extends Activity implements Game {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
+		/* Deprecated since API 13, but minimum is 8 */
+		int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+		
+		Bitmap frameBuffer = Bitmap.createBitmap(screenWidth, screenHeight, Config.RGB_565);
 
-		boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-		int frameBufferWidth = isPortrait ? 800 : 1280;
-		int frameBufferHeight = isPortrait ? 1280 : 800;
-		Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
-				frameBufferHeight, Config.RGB_565);
-
-		float scaleX = (float) frameBufferWidth
-				/ getWindowManager().getDefaultDisplay().getWidth();
-		float scaleY = (float) frameBufferHeight
-				/ getWindowManager().getDefaultDisplay().getHeight();
+		float scaleX = 1.0f;
+		float scaleY = 1.0f;
 
 		renderView = new AndroidFastRenderView(this, frameBuffer);
 		graphics = new AndroidGraphics(getAssets(), frameBuffer);
@@ -55,8 +57,7 @@ public abstract class AndroidGame extends Activity implements Game {
 		setContentView(renderView);
 
 		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK,
-				"MyGame");
+		wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "SeismicBall");
 	}
 
 	@Override

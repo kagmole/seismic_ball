@@ -41,7 +41,6 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 			if (deltaTime > 3.15) {
 				deltaTime = (float) 3.15;
 			}
-
 			game.getCurrentScreen().update(deltaTime);
 			game.getCurrentScreen().paint(deltaTime);
 
@@ -49,7 +48,6 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 			canvas.getClipBounds(dstRect);
 			canvas.drawBitmap(framebuffer, null, dstRect, null);
 			holder.unlockCanvasAndPost(canvas);
-
 		}
 	}
 

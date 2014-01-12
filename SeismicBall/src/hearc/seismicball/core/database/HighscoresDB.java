@@ -53,7 +53,7 @@ public class HighscoresDB {
 		// open the DB
 		open();
 		//query give all the highscores order by desc
-		Cursor c = database.query(TABLE_HIGHSCORES, new String[] {COL_ID, COL_SCORE, COL_NAME}, null , null,  null, null, COL_SCORE+" DESC");
+		Cursor c = database.query(TABLE_HIGHSCORES, new String[] {COL_ID, COL_SCORE, COL_NAME}, null , null,  null, null, COL_SCORE+" ASC");
 		// list with String[3] {rank,score,name}
 		List<String[]> highscores = new ArrayList<String[]>();
 		// the rank value who be increment on each movenext()

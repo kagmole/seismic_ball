@@ -7,6 +7,7 @@ import hearc.seismicball.framework.Image;
 
 public class Assets {
 	public static Image ball;
+	public static Image ballMultiplayer;
 	public static Image splash;
 	public static Image tileEnd;
 	public static Image tileGround;

@@ -18,6 +18,7 @@ import hearc.seismicball.framework.FileIO;
 public class LoadingScreen extends Screen {
 	
 	private static String ballFilePath = "images/ball.png";
+	private static String ballMultiplayerFilePath = "images/ball2.png";
 	private static String tileEndFilePath = "images/tile_end.png";
 	private static String tileGroundFilePath = "images/tile_ground.png";
 	private static String tileHoleFilePath = "images/tile_hole.png";
@@ -38,6 +39,7 @@ public class LoadingScreen extends Screen {
 		Graphics g = game.getGraphics();
 		
 		Assets.ball = g.newImage(ballFilePath, ImageFormat.ARGB4444);
+		Assets.ballMultiplayer = g.newImage(ballMultiplayerFilePath, ImageFormat.ARGB4444);
 		Assets.tileEnd = g.newImage(tileEndFilePath, ImageFormat.ARGB4444);
 		Assets.tileGround = g.newImage(tileGroundFilePath, ImageFormat.ARGB4444);
 		Assets.tileHole = g.newImage(tileHoleFilePath, ImageFormat.ARGB4444);

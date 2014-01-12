@@ -16,8 +16,12 @@ public class Ball {
 	
 	private Rect ballBounds;
 	
-	public Ball() {
-		ballImage = Assets.ball;
+	public Ball(boolean isMultiplayer) {
+		if(isMultiplayer){
+			ballImage = Assets.ballMultiplayer;
+		}else {
+			ballImage = Assets.ball;
+		}
 	}
 	
 	public void resetMatrixPosition(int i, int j) {
@@ -50,5 +54,13 @@ public class Ball {
 	
 	public void setSpeedFactor(float speedFactor) {
 		this.speedFactor = speedFactor;
+	}
+	
+	public void setPositionX(int x){
+		ballBounds.left = x;
+	}
+	
+	public void setPositionY(int y){
+		ballBounds.top = y;
 	}
 }

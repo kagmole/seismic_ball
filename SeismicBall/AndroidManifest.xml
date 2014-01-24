@@ -46,6 +46,7 @@
         
         <activity android:name=".core.DeviceListActivity"
                   android:label="select_device"
+                  android:theme="@android:style/Theme.Holo.Dialog"
                   android:configChanges="orientation|keyboardHidden" />
     </application>
 

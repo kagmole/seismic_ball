@@ -53,7 +53,7 @@ public class StartMenuActivity extends Activity {
 	// Local Bluetooth adapter
 	private BluetoothAdapter mBluetoothAdapter = null;
 	// Member object for the chat services
-	private BluetoothChatService mChatService = null;
+	private BluetoothService mChatService = null;
 	
 	private Button btnPlay = null;
 
@@ -157,7 +157,7 @@ public class StartMenuActivity extends Activity {
 		if (mChatService != null) {
 			// Only if the state is STATE_NONE, do we know that we haven't
 			// started already
-			if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
+			if (mChatService.getState() == BluetoothService.STATE_NONE) {
 				// Start the Bluetooth chat services
 				mChatService.start();
 			}
@@ -182,7 +182,7 @@ public class StartMenuActivity extends Activity {
 //				R.layout.message);
 
 		// Initialize the BluetoothChatService to perform bluetooth connections
-		mChatService = new BluetoothChatService(this, mHandler);
+		mChatService = new BluetoothService(this, mHandler);
 
 		// Initialize the buffer for outgoing messages
 		mOutStringBuffer = new StringBuffer("");
@@ -196,7 +196,7 @@ public class StartMenuActivity extends Activity {
 	 */
 	protected void sendMessage(String message) {
 		// Check that we're actually connected before trying anything
-		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+		if (mChatService.getState() != BluetoothService.STATE_CONNECTED) {
 //			Toast.makeText(this, "Not connected", Toast.LENGTH_SHORT).show();
 			Log.i("TEST","Not connected");
 			return;
@@ -226,16 +226,16 @@ public class StartMenuActivity extends Activity {
 				if (D)
 					Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
 				switch (msg.arg1) {
-				case BluetoothChatService.STATE_CONNECTED:
+				case BluetoothService.STATE_CONNECTED:
 					// setStatus(getString(R.string.title_connected_to,
 					// mConnectedDeviceName));
 //					mConversationArrayAdapter.clear();
 					break;
-				case BluetoothChatService.STATE_CONNECTING:
+				case BluetoothService.STATE_CONNECTING:
 					// setStatus(R.string.title_connecting);
 					break;
-				case BluetoothChatService.STATE_LISTEN:
-				case BluetoothChatService.STATE_NONE:
+				case BluetoothService.STATE_LISTEN:
+				case BluetoothService.STATE_NONE:
 					// setStatus(R.string.title_not_connected);
 					break;
 				}
@@ -253,6 +253,11 @@ public class StartMenuActivity extends Activity {
 				
 				if(readMessage.contains("n")){
 					Log.i("TEST",readMessage);
+				}
+				
+				if(readMessage.contains("end")&&GameScreen.instance!=null){
+					GameScreen.instance.looseGame();
+					return;
 				}
 				
 				if(readMessage.contains("next")&&GameScreen.instance!=null){
@@ -360,7 +365,7 @@ public class StartMenuActivity extends Activity {
 	}
 	
 	protected boolean isMultiplayer(){
-		if(mChatService.getState()==BluetoothChatService.STATE_CONNECTED){
+		if(mChatService.getState()==BluetoothService.STATE_CONNECTED){
 			return true;
 		}
 		return false;

@@ -104,13 +104,23 @@ public class GameScreen extends Screen implements SensorEventListener {
 		} else {
 			// TODO Fin du jeu
 			// XXX On boucle temporairement sur les niveaux
+			StartMenuActivity.instance.sendMessage("end");
+			StartMenuActivity.instance.sendMessage("end");
+
 			currentLevelID = 0;
 
 			instance = null;
 			getNameDialog();
 			
+			
 			// goToNextLevel();
 		}
+	}
+	
+	public void looseGame(){
+//		currentLevelID = 0;
+//		instance = null;
+		((AndroidGame) game).finish();
 	}
 
 	private void getNameDialog() {
@@ -137,6 +147,7 @@ public class GameScreen extends Screen implements SensorEventListener {
 						HighscoresDB database = new HighscoresDB(((AndroidGame)game).getApplicationContext());
 						database.addHighscore((int)(startTime)/10, input.getText().toString());
 						((AndroidGame) game).finish();
+						
 						wait = false;
 				    }
 				});
@@ -262,7 +273,7 @@ public class GameScreen extends Screen implements SensorEventListener {
 		
 		// if multiplayer then draw the ball
 		// work still there isn't collision with the other ball
-		if(!StartMenuActivity.instance.isMultiplayer()){
+		if(StartMenuActivity.instance.isMultiplayer()){
 			g.drawImage(ballMultiplayer.getImage(),
 					ballMultiplayer.getBounds().left,
 					ballMultiplayer.getBounds().top);
